@@ -30,7 +30,7 @@ double prevAvg;
 double prev_percentage_change = 0.00;
 double percentage_change = 0.00;
 
-#define WINDOW_SIZE5 5 // Define the window size
+#define WINDOW_SIZE5 9 // Define the window size
 
 int readings5[WINDOW_SIZE5]; // Declare an array to store the readings
 int index5 = 0; // Initialize the index to 0
@@ -110,18 +110,26 @@ void loop()
 
   else if(percentage_change > prev_percentage_change)
   {
-     if(value < prevValue)
-     {
-       double change = ((prevValue - value) / value) * 100;
-       stress += change;
-     }    
-     else if(value > prevValue)
-     {
-        stress -= percentage_change - prev_percentage_change;
-     }
+    //  if(value < prevValue)
+    //  {
+    //    double change = ((prevValue - value) / value) * 100;
+    //    stress += change;
+    //  }    
+    //  if(value > prevValue)
+    //  {
+    //     stress -= percentage_change - prev_percentage_change;
+    //  }
+    stress -= percentage_change - prev_percentage_change;
+
   }
 
 
+  if(stress - prevStress > 10)
+  {
+     stress = prevStress + 5;
+  }
+ 
+  
   
   stress_value = stress;
 
@@ -160,6 +168,7 @@ void loop()
   prev_percentage_change = percentage_change;
   prevValue = value;
   prevAvg = weighted_average;
+  prevStress = stress;
 
   // Increase the window size by 1 until it reaches the maximum window size
   if (window_size < MAX_WINDOW_SIZE) {
